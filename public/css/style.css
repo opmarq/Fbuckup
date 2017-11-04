@@ -11,9 +11,9 @@ body{
     width: 700px;
     margin: 20px auto;
     padding: 40px 30px;
-    background-color: #fff;
     border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.33);
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.33);
     transition: all .3s ease;
     text-align: center;
 }
@@ -24,4 +24,21 @@ body{
     margin: 20px auto;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.album-img{
+    width: 150%;
+}
+
+.album-section{
+    margin: 20px;
+}
+
+.img-container{
+    height: 140px;
+    overflow: hidden;
+}
+
+.album-element{
+    overflow: hidden;
 }
