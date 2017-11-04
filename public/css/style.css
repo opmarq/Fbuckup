@@ -18,6 +18,9 @@ body{
     text-align: center;
 }
 
+img{
+    width: 100%;
+}
 .img-profile{
     display: block;
     width: 150px;
@@ -41,4 +44,13 @@ body{
 
 .album-element{
     overflow: hidden;
+}
+
+.photo-element img{
+    width: 150%;
+}
+.photo-element{
+    overflow: hidden;
+    max-height: 170px;
+    padding: 10px;
 }
