@@ -3,6 +3,10 @@ body{
     background-color: #E2E2E2 !important;
 }
 
+*{
+    outline: none !important;
+}
+
 #root{
     width: 700px;
     margin: 20px auto;

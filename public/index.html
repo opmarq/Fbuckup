@@ -13,7 +13,7 @@
   <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-  <script src="src/fbconnect.js"></script>
+  <script src="js/fbconnect.js"></script>
 </head>
 
 <body>
@@ -23,17 +23,66 @@
   </div>
 
   <script type="text/babel">
+      
+      class App extends React.Component{
 
-      class Welcome extends React.Component{
-        render(){
+        constructor(props)
+        {
+          super(props);
 
-          return <h1>Hello WORLD!</h1>
+          this.state = {name: "login",token:""};
+        }
+
+        handleLogin(infos){
+
+          if(!infos)
+            return false;
+            
+          console.log(infos);
+
+          this.setState({
+                        name: "logout",
+                        token: infos.authResponse.accessToken
+                      });
 
         }
+
+        render(){
+          return <FbLogin name={this.state.name} getUserInfo={ this.handleLogin.bind(this) }  />;
+        } 
+
+      }
+
+
+      class FbLogin extends React.Component{
+
+        constructor(props)
+        {
+          super(props);
+        }
+
+        handleClick(){
+
+          FB.login((response)=>{
+
+                if (response.authResponse)
+
+                    this.props.getUserInfo(response);
+                
+                else
+                    this.props.getUserInfo(false);
+
+            }, { scope: 'email,user_photos' });
+            
+        }
+        render(){
+          return <button className="btn btn-primary" onClick={this.handleClick.bind(this)}><i className="fa fa-facebook" aria-hidden="true"></i> {this.props.name} </button>
+        }
+
       }
 
       ReactDOM.render(
-        <Welcome />,
+        <App />,
         document.getElementById('root')
       );
 
