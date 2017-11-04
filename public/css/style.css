@@ -17,3 +17,11 @@ body{
     transition: all .3s ease;
     text-align: center;
 }
+
+.img-profile{
+    display: block;
+    width: 150px;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}

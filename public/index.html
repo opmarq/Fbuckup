@@ -30,29 +30,51 @@
         {
           super(props);
 
-          this.state = {name: "login",token:""};
+          this.state = {
+                        name: "login",
+                        token:"",
+                        profileImg: "img/profile.png",
+                        username: ""
+                      };
         }
 
         handleLogin(infos){
 
           if(!infos)
             return false;
-            
-          console.log(infos);
+
+         // console.log(infos);
 
           this.setState({
                         name: "logout",
                         token: infos.authResponse.accessToken
                       });
+          
+          this.fbGraphRequest();
+        }
 
+        fbGraphRequest()
+        {
+          FB.api('/me', { fields: 'id,name,picture.type(large),albums{name,photos,cover_photo}' }, 'GET', (response)=>{
+
+            console.log(response.picture.data.url);
+            
+            this.setState({
+                             profileImg: response.picture.data.url,
+                             username: response.name
+                          });
+
+          });
         }
 
         render(){
-          return <FbLogin name={this.state.name} getUserInfo={ this.handleLogin.bind(this) }  />;
+          return <div> 
+                    <ProfileImg src={this.state.profileImg} username={this.state.username} /> 
+                    <FbLogin name={this.state.name} getUserInfo={ this.handleLogin.bind(this) }  />
+                </div>;
         } 
 
       }
-
 
       class FbLogin extends React.Component{
 
@@ -79,6 +101,22 @@
           return <button className="btn btn-primary" onClick={this.handleClick.bind(this)}><i className="fa fa-facebook" aria-hidden="true"></i> {this.props.name} </button>
         }
 
+      }
+
+
+      class ProfileImg extends React.Component{
+
+        constructor(props)
+        {
+          super(props)
+        }
+
+        render(){
+            return <div>
+                      <img src={this.props.src}  className="img img-profile"/>
+                      <h4 className="profile-name">{this.props.username}</h4>
+                  </div>;
+        }
       }
 
       ReactDOM.render(
