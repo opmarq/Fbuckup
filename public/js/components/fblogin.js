@@ -6,7 +6,7 @@ class FbLogin extends React.Component {
 
     handleClick(name) {
 
-        if (name == "login") {
+        if (name == "Login") {
             FB.login((response) => {
 
                 if (response.authResponse)

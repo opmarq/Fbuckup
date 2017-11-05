@@ -4,14 +4,15 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            name: "login",
+            name: "Login",
             token: "",
             profileImg: "img/profile.png",
             profileCover: "",
             username: "",
             albums: null,
             fullAlbums: null,
-            listPhotos: null
+            listPhotos: null,
+            exported: []
         };
     }
 
@@ -23,7 +24,7 @@ class App extends React.Component {
         // console.log(infos);
 
         this.setState({
-            name: "logout",
+            name: "Logout",
             token: infos.authResponse.accessToken
         });
 
@@ -37,6 +38,30 @@ class App extends React.Component {
             , 'GET', this.handleResponse.bind(this));
     }
 
+    handlePhotoSelection(url, state) {
+
+
+        // check wiether to delete or push the new url!
+
+        if (state) {
+
+            this.setState({
+                exported: [...this.state.exported, url]
+            })
+            
+        }else{
+
+            let tmpExported = this.state.exported;
+            tmpExported.splice(tmpExported.indexOf(url),1);
+
+            this.setState({
+                exported: tmpExported
+            });
+        }
+
+
+    }
+
     getSelectedAlbum(id) {
 
         var selectedAlbum = this.state.fullAlbums.find((album) => {
@@ -47,7 +72,7 @@ class App extends React.Component {
 
         var photosList = selectedAlbum.photos.data.map((photo) => {
 
-            return <Photo key={photo.id} id={photo.id}  token={this.state.token} />
+            return <Photo key={photo.id} id={photo.id} handlePhotoSelection={this.handlePhotoSelection.bind(this)} token={this.state.token} />
 
         });
 
@@ -56,6 +81,8 @@ class App extends React.Component {
         });
 
     }
+
+    // handling the response and getting the albums of the user to display them later.
 
     handleResponse(response) {
 
@@ -79,6 +106,7 @@ class App extends React.Component {
         return <div>
             <ProfileImg src={this.state.profileImg} cover={this.state.profileCover} username={this.state.username} />
             <FbLogin name={this.state.name} getUserInfo={this.handleLogin.bind(this)} />
+            <ExportBtn export={this.state.exported} />
             <div className="row album-section">
                 {this.state.albums}
             </div>
