@@ -51,6 +51,11 @@ img{
 }
 .photo-element{
     overflow: hidden;
-    max-height: 170px;
-    padding: 10px;
+    max-height: 150px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.img-selected{
+    opacity: 0.5;
 }
