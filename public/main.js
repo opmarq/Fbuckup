@@ -7,6 +7,7 @@ class App extends React.Component {
             name: "login",
             token: "",
             profileImg: "img/profile.png",
+            profileCover: "",
             username: "",
             albums: null,
             fullAlbums: null,
@@ -32,7 +33,7 @@ class App extends React.Component {
     fbGraphRequest() {
         // requesting user's infos and chaging the state to render the new infos in the view.
         FB.api('/me'
-            , { fields: 'id,name,picture.type(large),albums{name,photos,cover_photo.type(large)}' }
+            , { fields: 'id,name,cover,picture.type(large),albums{name,photos,cover_photo.type(large)}' }
             , 'GET', this.handleResponse.bind(this));
     }
 
@@ -46,7 +47,7 @@ class App extends React.Component {
 
         var photosList = selectedAlbum.photos.data.map((photo) => {
 
-            return <Photo key={photo.id} id={photo.id} token={this.state.token} />
+            return <Photo key={photo.id} id={photo.id}  token={this.state.token} />
 
         });
 
@@ -66,6 +67,7 @@ class App extends React.Component {
 
         this.setState({
             profileImg: response.picture.data.url,
+            profileCover: response.cover.source,
             username: response.name,
             albums: albums,
             fullAlbums: response.albums.data
@@ -75,7 +77,7 @@ class App extends React.Component {
 
     render() {
         return <div>
-            <ProfileImg src={this.state.profileImg} username={this.state.username} />
+            <ProfileImg src={this.state.profileImg} cover={this.state.profileCover} username={this.state.username} />
             <FbLogin name={this.state.name} getUserInfo={this.handleLogin.bind(this)} />
             <div className="row album-section">
                 {this.state.albums}

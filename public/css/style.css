@@ -8,14 +8,20 @@ body{
 }
 
 #root{
-    width: 700px;
-    margin: 20px auto;
-    padding: 40px 30px;
+    width: 800px;
+    padding: 0px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     border-radius: 2px;
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0,0,0,.33);
     transition: all .3s ease;
     text-align: center;
+    padding-bottom: 10px;
+}
+
+.content{
+    padding: 10px;
 }
 
 img{
@@ -58,4 +64,19 @@ img{
 
 .img-selected{
     opacity: 0.5;
+}
+
+.cover-section{
+    overflow: hidden;
+    margin-bottom: 10px;
+    padding-top: 40px;
+    border-bottom: 1px solid #ccc;
+    background-position: 0 !important;
+    background-size: cover !important;
+}
+
+.album-section,.photos-section
+{
+    padding-left: 10px;
+    padding-right: 25px;
 }
