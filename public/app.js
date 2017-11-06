@@ -7,7 +7,7 @@ class App extends React.Component {
             name: "Login",
             token: "",
             profileImg: "img/profile.png",
-            profileCover: "",
+            profileCover: "img/cover.jpg",
             username: "",
             albums: null,
             fullAlbums: null,
@@ -48,7 +48,7 @@ class App extends React.Component {
             this.setState({
                 exported: [...this.state.exported, url]
             })
-            
+
         }else{
 
             let tmpExported = this.state.exported;
@@ -102,11 +102,24 @@ class App extends React.Component {
 
     }
 
+    handleExportCall(){
+
+        let payload = {
+            urls: JSON.stringify(this.state.exported),
+            fbtoken: this.state.token
+        }
+
+        $.post( "http://localhost:8000/backup",payload ,function(data){
+
+            console.log(data);
+        });
+    }
+
     render() {
         return <div>
             <ProfileImg src={this.state.profileImg} cover={this.state.profileCover} username={this.state.username} />
             <FbLogin name={this.state.name} getUserInfo={this.handleLogin.bind(this)} />
-            <ExportBtn export={this.state.exported} />
+            <ExportBtn export={this.state.exported} handleExportCall={this.handleExportCall.bind(this)}  />
             <div className="row album-section">
                 {this.state.albums}
             </div>

@@ -30,9 +30,17 @@ img{
 .img-profile{
     display: block;
     width: 150px;
-    margin: 20px auto;
-    border: 1px solid #ccc;
+    margin: 10px auto;
+    border: 5px solid #fff;
     border-radius: 5px;
+    box-shadow: 1px 1px 5px #555;
+    transform: rotate(2deg);
+}
+
+.profile-name{
+    font-family: 'Patrick Hand', cursive;
+    font-size: 2em;
+    transform: rotate(2deg);
 }
 
 .album-img{
@@ -57,7 +65,7 @@ img{
 }
 .photo-element{
     overflow: hidden;
-    max-height: 150px;
+    max-height: 170px;
     margin-top: 10px;
     cursor: pointer;
 }
@@ -84,4 +92,19 @@ img{
 .btn{
     margin-left: 5px;
     margin-right: 5px;
+}
+
+
+/** Loading Animation **/
+
+@keyframes loading {
+    from {background-color: #449D44;}
+    to {background-color:#1E1E1E;}
+}
+
+.loading{
+    background-color: red !important;
+    animation-name: loading;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
 }
