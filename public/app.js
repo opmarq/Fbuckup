@@ -109,10 +109,13 @@ class App extends React.Component {
             fbtoken: this.state.token
         }
 
-        $.post( "http://localhost:8000/backup",payload ,function(data){
+        // calling sending the image urls to the server 
+        
+        // $.post( "http://localhost:8000/backup",payload ,function(data){
 
-            console.log(data);
-        });
+        //     console.log(data);
+       
+        // });
     }
 
     render() {
@@ -131,8 +134,8 @@ class App extends React.Component {
 
 }
 
-
 ReactDOM.render(
     <App />,
     document.getElementById('root')
 );
+

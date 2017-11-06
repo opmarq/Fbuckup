@@ -13,7 +13,6 @@
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
-    "firebase-admin": "^5.4.3",
-    "image-downloader": "^3.3.0"
+    "image-downloader": "^3.3.0",
   }
 }
