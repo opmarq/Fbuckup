@@ -1,18 +1,14 @@
 class FbLogin extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     handleClick(name) {
 
         if (name == "Login") {
+            
             FB.login((response) => {
 
                 if (response.authResponse)
 
                     this.props.getUserInfo(response);
-
                 else
                     this.props.getUserInfo(false);
 
@@ -21,9 +17,8 @@ class FbLogin extends React.Component {
         } else {
 
             FB.logout(() => { document.location.reload() });
-
+        
         }
-
     }
 
     render() {

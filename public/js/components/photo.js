@@ -19,14 +19,16 @@ class Photo extends React.Component {
         }));
 
         // sending the selected image with its state to the parent by calling its callback function.
-        
-        this.props.handlePhotoSelection( this.makeFacebookPhotoURL(this.props.id, this.props.token) ,!this.state.selected);
+
+        this.props.handlePhotoSelection(this.makeFacebookPhotoURL(this.props.id, this.props.token), !this.state.selected);
 
     }
 
     render() {
         return <div className="col-sm-3 photo-element" onClick={this.toggleSelection.bind(this)} >
-            <img className={this.state.selected ? 'img-selected' : ''} src={this.makeFacebookPhotoURL(this.props.id, this.props.token)} />
+            <div>
+                <img className={this.state.selected ? 'img-selected' : ''} src={this.makeFacebookPhotoURL(this.props.id, this.props.token)} />
+            </div>
         </div>;
     }
 }

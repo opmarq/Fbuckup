@@ -7,7 +7,7 @@ class App extends React.Component {
             name: "Login",
             token: "",
             profileImg: "img/profile.png",
-            profileCover: "",
+            profileCover: "img/cover.jpg",
             username: "",
             albums: null,
             fullAlbums: null,
@@ -16,12 +16,13 @@ class App extends React.Component {
         };
     }
 
+    // this is a callback function, will will be fired when the user clicks the login button
+    // we check if the user did complet the login if yes we request the user informations from facebook api
+
     handleLogin(infos) {
 
         if (!infos)
             return false;
-
-        // console.log(infos);
 
         this.setState({
             name: "Logout",
@@ -33,42 +34,46 @@ class App extends React.Component {
 
     fbGraphRequest() {
         // requesting user's infos and chaging the state to render the new infos in the view.
+
         FB.api('/me'
             , { fields: 'id,name,cover,picture.type(large),albums{name,photos,cover_photo.type(large)}' }
             , 'GET', this.handleResponse.bind(this));
     }
 
-    handlePhotoSelection(url, state) {
 
+    // handling the response and getting the albums of the user to display them later.
 
-        // check wiether to delete or push the new url!
+    handleResponse(response) {
 
-        if (state) {
+        // populating the Album component
 
-            this.setState({
-                exported: [...this.state.exported, url]
-            })
-            
-        }else{
+        var albums = response.albums.data.map((album) => {
 
-            let tmpExported = this.state.exported;
-            tmpExported.splice(tmpExported.indexOf(url),1);
+            return <Album key={album.id} id={album.id} name={album.name} displayAlbumPhotos={this.getSelectedAlbum.bind(this)} />;
 
-            this.setState({
-                exported: tmpExported
-            });
-        }
+        });
 
+        // changing the state which will triggers component to render and change the view
+
+        this.setState({
+            profileImg: response.picture.data.url,
+            profileCover: response.cover.source,
+            username: response.name,
+            albums: albums,
+            fullAlbums: response.albums.data
+        });
 
     }
 
+
+    // callback for selecting the album which will show photos of the selected album based on its ID
+
     getSelectedAlbum(id) {
 
-        var selectedAlbum = this.state.fullAlbums.find((album) => {
+        // get the selected album
+        var selectedAlbum = this.state.fullAlbums.find((album) => album.id == id);
 
-            return album.id == id;
-
-        });
+        // getting the photos of the selected album 
 
         var photosList = selectedAlbum.photos.data.map((photo) => {
 
@@ -82,31 +87,51 @@ class App extends React.Component {
 
     }
 
-    // handling the response and getting the albums of the user to display them later.
 
-    handleResponse(response) {
+    handlePhotoSelection(url, state) {
 
-        var albums = response.albums.data.map((album) => {
+        // delete or push the new url!
 
-            return <Album key={album.id} id={album.id} name={album.name} displayAlbumPhotos={this.getSelectedAlbum.bind(this)} />;
+        if (state) {
+
+            this.setState({
+                exported: [...this.state.exported, url]
+            })
+
+        } else {
+
+            let tmpExported = this.state.exported;
+            tmpExported.splice(tmpExported.indexOf(url), 1);
+
+            this.setState({
+                exported: tmpExported
+            });
+        }
+
+    }
+
+
+    handleExportCall() {
+
+        let payload = {
+            urls: JSON.stringify(this.state.exported),
+            fbtoken: this.state.token
+        }
+
+        // calling sending the image urls to the server 
+
+        $.post( "http://localhost:8000/backup",payload ,function(data){
+
+            console.log(data);
 
         });
-
-        this.setState({
-            profileImg: response.picture.data.url,
-            profileCover: response.cover.source,
-            username: response.name,
-            albums: albums,
-            fullAlbums: response.albums.data
-        });
-
     }
 
     render() {
         return <div>
-            <ProfileImg src={this.state.profileImg} cover={this.state.profileCover} username={this.state.username} />
+            <ProfileSection src={this.state.profileImg} cover={this.state.profileCover} username={this.state.username} />
             <FbLogin name={this.state.name} getUserInfo={this.handleLogin.bind(this)} />
-            <ExportBtn export={this.state.exported} />
+            <ExportBtn export={this.state.exported} handleExportCall={this.handleExportCall.bind(this)} />
             <div className="row album-section">
                 {this.state.albums}
             </div>
@@ -118,8 +143,8 @@ class App extends React.Component {
 
 }
 
-
 ReactDOM.render(
     <App />,
     document.getElementById('root')
 );
+
