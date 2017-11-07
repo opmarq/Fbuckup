@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const util = require('util');
 const request = require("request")
-const fs = require('fs');
 const cors = require('cors');
 const firebase = require('firebase');
 const googleStorage = require('@google-cloud/storage');
@@ -10,7 +9,6 @@ const app = express();
 
 
 app.use(cors()); // allow CSRF
-
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
@@ -51,6 +49,8 @@ app.post('/backup', function (req, res) {
   let urls = JSON.parse(req.body.urls);
   let token = req.body.fbtoken;
 
+  // passing the facebook token
+
   const credential = firebase.auth.FacebookAuthProvider.credential(token);
   
   // Sign in with credential from the Google user.
@@ -71,7 +71,7 @@ app.post('/backup', function (req, res) {
           let file = {
             buffer: data,
             name: `${user.uid}/${ fileName }.jpg`,
-            mime: "image/png"
+            mime: "image/jpg"
           }
         
           uploadImageToStorage(file).then((data)=>{
@@ -137,7 +137,6 @@ const uploadImageToStorage = (file) => {
     });
 
     blobStream.on('finish', () => {
-       //The public URL can be used to directly access the file via HTTP.
 
       const url = util.format(`https://storage.googleapis.com/${bucket.name}/${file.name}`);
 

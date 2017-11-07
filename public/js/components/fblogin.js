@@ -3,9 +3,11 @@ class FbLogin extends React.Component {
     handleClick(name) {
 
         if (name == "Login") {
+            
             FB.login((response) => {
 
                 if (response.authResponse)
+
                     this.props.getUserInfo(response);
                 else
                     this.props.getUserInfo(false);
