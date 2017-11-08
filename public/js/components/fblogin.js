@@ -17,7 +17,6 @@ class FbLogin extends React.Component {
         } else {
 
             FB.logout(() => { document.location.reload() });
-        
         }
     }
 

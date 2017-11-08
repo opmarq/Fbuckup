@@ -8,7 +8,7 @@ const googleStorage = require('@google-cloud/storage');
 const app = express();
 
 
-app.use(cors()); // allow CSRF
+app.use(cors()); // allow CSFR
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
@@ -52,42 +52,30 @@ app.post('/backup', function (req, res) {
   // passing the facebook token
 
   const credential = firebase.auth.FacebookAuthProvider.credential(token);
-  
+
   // Sign in with credential from the Google user.
-  firebase.auth().signInWithCredential(credential).catch((error)=> console.log(error) );
+  firebase.auth().signInWithCredential(credential).catch((error) => console.log(error));
 
-  firebase.auth().onAuthStateChanged((user)=>{
-    
+  firebase.auth().onAuthStateChanged((user) => {
+
     if (user) {
-      
-      //console.log(user.displayName)
 
-      urls.forEach((url)=>{
+      //console.log(user.displayName
 
-        let fileName = url.match(/\/(\w+)\//)[1];
+      Promise.all(urls.map((url) => uploadPromise(user,url))).then((values)=>{
 
-        requestImage(url).then((data)=>{
+        res.end("done");
 
-          let file = {
-            buffer: data,
-            name: `${user.uid}/${ fileName }.jpg`,
-            mime: "image/jpg"
-          }
-        
-          uploadImageToStorage(file).then((data)=>{
-        
-            console.log(data);
-        
-          });
+      }).catch((error)=>{
 
-        });
+        res.end("error");
 
       });
 
     } else {
 
       console.log("not signed in!!");
-    
+
     }
   });
 
@@ -97,19 +85,52 @@ app.post('/backup', function (req, res) {
 app.listen(8000);
 
 
-const requestImage= (url)=> new Promise((resolve,reject)=>{
+// this promise will reuqest the image from the url and also upload it to firebase
+
+const uploadPromise = (user,url) => {
+
+  let fileName = url.match(/\/(\w+)\//)[1];
+
+  return new Promise((resolve, reject) => {
+
+    requestImage(url).then((blob) => {
+
+      let file = {
+        buffer: blob,
+        name: `${user.uid}/${fileName}.jpg`,
+        mime: "image/jpg"
+      }
+
+      uploadImageToStorage(file).then( data => {
+
+        resolve(data);
+
+      }).catch(error =>{
+
+        reject(error);
+
+      });
+
+    });
+
+  });
+
+}
+
+
+const requestImage = (url) => new Promise((resolve, reject) => {
 
   var requestSettings = {
     url: url,
     method: 'GET',
     encoding: null
   };
-  
-  request(requestSettings, function(error, response, body) {
-    
-    if(!body)
+
+  request(requestSettings, function (error, response, body) {
+
+    if (!body)
       reject("No image file");
-    
+
     resolve(body);
 
   });
@@ -119,7 +140,8 @@ const requestImage= (url)=> new Promise((resolve,reject)=>{
 
 const uploadImageToStorage = (file) => {
 
-  let prom = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
+
     if (!file) {
       reject('No image file');
     }
@@ -147,7 +169,6 @@ const uploadImageToStorage = (file) => {
     blobStream.end(file.buffer);
 
   });
-  return prom;
 }
 
 

@@ -1,10 +1,9 @@
 class ExportBtn extends React.Component {
 
     handleExportClick(){
-
-        console.log(this.props.export);
-        this.props.handleExportCall();
         
+        console.log(this.props.export);
+        this.props.handleExportCall();      
     }
 
     render() {
