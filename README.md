@@ -26,23 +26,23 @@ Those are the technologies i used to make the web app.
 
 #### How to run the app
 
-> i'm using my firebase & facebook account configuration that i've created for the purpose of this challenge to make the testing the app easy, so feel free to use it.
+> i'm using my firebase & facebook account configuration that i've created for the purpose of this challenge to make the test easy, so feel free to use it.
 
-1. Clone the repository
+1. Clone the repository.
 ```
-git clone 'repo'
+git clone https://github.com/opmarq/Fbuckup.git
 ```
 2. you will need a web server to run the app, i'm using live-server which you can download from npm.
 
 ```
 npm install -g live-server
 ```
-3. go to the public directory and run
+3. go to the public directory and run.
 
 ```
 live-server
 ```
-4. go to the server directory and install all the dependencies by running this npm cmd
+4. go to the server directory and install all the dependencies by running this npm cmd.
 
 ```
 npm install
@@ -51,5 +51,5 @@ npm install
 ````
 node server.js
 ````
-> now the app is app and running you can sign in using your facebook account and backup your photos.
-> since the facebook app is in dev mode, you will need me to add you as a tester.
+> The app is up and running you can sign in using your facebook account and backup your photos.
+> Since the facebook app is in dev mode, you will need me to add you as a tester.
