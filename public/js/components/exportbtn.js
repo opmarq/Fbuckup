@@ -8,9 +8,11 @@ class ExportBtn extends React.Component {
 
     render() {
         
-        let disabled = this.props.export.length > 0 ? false : true;
+        let disabled = this.props.export.length > 0 && this.props.loading == "" ? false : true;
 
-        return <button disabled={disabled} onClick={ this.handleExportClick.bind(this) } className="btn btn-success"  >
+        let display = `btn btn-success ${this.props.loading}`;
+
+        return <button disabled={disabled} onClick={ this.handleExportClick.bind(this) } className={display} >
             <i className="fa fa-cloud" aria-hidden="true"></i> Export
         </button>
     }

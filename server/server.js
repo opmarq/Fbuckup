@@ -17,23 +17,26 @@ app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
 
-var config = {
-  apiKey: "AIzaSyCNfpWAOSSCacueDGfmoedXPdLaGC66Wo4",
-  authDomain: "wouldyou-9cb01.firebaseapp.com",
-  databaseURL: "https://wouldyou-9cb01.firebaseio.com",
-  projectId: "wouldyou-9cb01",
-  storageBucket: "wouldyou-9cb01.appspot.com",
-  messagingSenderId: "10270368950"
-};
+// initializing the connection with firebase 
 
+var config = {
+  apiKey: "AIzaSyDM3xxc5yjvE3BQDvhpFxx78kFkMrN46yQ",
+  authDomain: "hiddenchalenge.firebaseapp.com",
+  databaseURL: "https://hiddenchalenge.firebaseio.com",
+  projectId: "hiddenchalenge",
+  storageBucket: "hiddenchalenge.appspot.com",
+  messagingSenderId: "110340634009"
+};
 firebase.initializeApp(config);
 
+// initializing the connection withe gcloud.
+
 const storage = googleStorage({
-  projectId: "wouldyou-9cb01",
+  projectId: "hiddenchalenge",
   keyFilename: "./key.json"
 });
 
-const bucket = storage.bucket("wouldyou-9cb01.appspot.com");
+const bucket = storage.bucket("hiddenchalenge.appspot.com");
 
 
 // if the user try to access server directly!
@@ -64,6 +67,8 @@ app.post('/backup', function (req, res) {
 
       Promise.all(urls.map((url) => uploadPromise(user,url))).then((values)=>{
 
+        console.log(values);
+
         res.end("done");
 
       }).catch((error)=>{
@@ -85,7 +90,7 @@ app.post('/backup', function (req, res) {
 app.listen(8000);
 
 
-// this promise will reuqest the image from the url and also upload it to firebase
+// this promise will request the image from the url and also upload it to firebase
 
 const uploadPromise = (user,url) => {
 
@@ -118,6 +123,8 @@ const uploadPromise = (user,url) => {
 }
 
 
+// request the blob of the image from a specified url 
+
 const requestImage = (url) => new Promise((resolve, reject) => {
 
   var requestSettings = {
@@ -137,6 +144,8 @@ const requestImage = (url) => new Promise((resolve, reject) => {
 
 });
 
+
+// getting the blob of the image and uploading it to firebase 
 
 const uploadImageToStorage = (file) => {
 

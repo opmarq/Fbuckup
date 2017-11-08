@@ -26,7 +26,7 @@ Those are the technologies i used to make the web app.
 
 #### How to run the app
 
-> i'm using my firebase account and facebook app settings, i made them for the challenge purpose, and they don't contain anything sensitive so i think that it's okey to share them. 
+> i'm using my firebase & facebook account configuration that i've created for the purpose of this challenge to make the testing the app easy, so feel free to use it.
 
 1. Clone the repository
 ```
@@ -42,9 +42,14 @@ npm install -g live-server
 ```
 live-server
 ```
-4. go to the server directory and run the node server
+4. go to the server directory and install all the dependencies by running this npm cmd
 
+```
+npm install
+```
+5. once the dependencies are installed you can run the node server.
 ````
 node server.js
 ````
 > now the app is app and running you can sign in using your facebook account and backup your photos.
+> since the facebook app is in dev mode, you will need me to add you as a tester.

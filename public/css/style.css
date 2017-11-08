@@ -103,8 +103,9 @@ img{
 }
 
 .loading{
+
     background-color: red !important;
     animation-name: loading;
-    animation-duration: 4s;
+    animation-duration: 2s;
     animation-iteration-count: infinite;
 }

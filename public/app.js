@@ -12,7 +12,8 @@ class App extends React.Component {
             albums: null,
             fullAlbums: null,
             listPhotos: null,
-            exported: []
+            exported: [],
+            exportLoading: ""
         };
     }
 
@@ -112,6 +113,13 @@ class App extends React.Component {
 
     handleExportCall() {
 
+        // show loading while waiting for the server callback
+
+        this.setState({
+            exportLoading: "loading"
+        });
+
+
         let payload = {
             urls: JSON.stringify(this.state.exported),
             fbtoken: this.state.token
@@ -119,7 +127,11 @@ class App extends React.Component {
 
         // calling sending the image urls to the server 
 
-        $.post( "http://localhost:8000/backup",payload ,function(data){
+        $.post( "http://localhost:8000/backup",payload ,(data)=>{
+
+            this.setState({
+                exportLoading: ""
+            })
 
             console.log(data);
 
@@ -130,7 +142,7 @@ class App extends React.Component {
         return <div>
             <ProfileSection src={this.state.profileImg} cover={this.state.profileCover} username={this.state.username} />
             <FbLogin name={this.state.name} getUserInfo={this.handleLogin.bind(this)} />
-            <ExportBtn export={this.state.exported} handleExportCall={this.handleExportCall.bind(this)} />
+            <ExportBtn loading={this.state.exportLoading} export={this.state.exported} handleExportCall={this.handleExportCall.bind(this)} />
             <div className="row album-section">
                 {this.state.albums}
             </div>
