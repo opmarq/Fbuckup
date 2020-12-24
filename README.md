@@ -1,5 +1,3 @@
-## Internship Program Coding Challenge
-
 ### Idea of the app
 
 A small Facebook-powered web app, that let the user export photos from Facebook to Firebase.
